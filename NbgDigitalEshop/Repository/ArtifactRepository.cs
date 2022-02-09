@@ -16,8 +16,7 @@ namespace NbgDigitalEshop.Repository
                 throw new ModelException("null artifact");
             if (artifact.Name == null)
                 throw new ModelException("null artifact name");
-            if (artifact.Price> 5000)
-                throw new ModelException("artifact too expensive");
+           
 
             return base.Add(artifact);
         }
