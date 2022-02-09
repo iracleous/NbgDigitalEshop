@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NbgDigitalEshop.exception
 {
-    public class CustomerException:Exception
+    public class ModelException:Exception
     {
-        public CustomerException(string description):base(description)
+        public ModelException(string description):base(description)
         {
               
         }
