@@ -1,42 +1,44 @@
-﻿using NbgDigitalEshop.Model;
+﻿//use case
+
+using NbgDigitalEshop.Model;
+using NbgDigitalEshop.Options;
 using NbgDigitalEshop.Repository;
+using NbgDigitalEshop.Service;
 
-var customer = new Customer { Name = "Manthos", Address = "Athens", DateOnly = new DateOnly() };
 
+// data from input forms
+var customerData = new CustomerOptions
+{
+    FirstName = "D",
+    LastName = "X",
+    Email = "xx@gg.gr",
+    Address = "Athens",
+    Password = "xx"
+};
+
+var artifactMedium = new ArtifactOptions { Name = "DPI NFT", Price = 2000 };
+var artifactHi = new ArtifactOptions { Name = "Thomi NFT", Price = 3000 };
 
 IRepository< Customer> customerRepository = new CustomerRepository();
-customerRepository.Add(customer);
-Console.WriteLine($"The number of customers is {customerRepository.Count()}");
-
-
-var anotherCustomer = new Customer { Name = "John", Address="Lamia" };
-IList<Customer> customers = customerRepository.Get(1, 50);
-
-customers.ToList().ForEach(eachCustomer =>
-            Console.WriteLine($"customer {eachCustomer.Id} = {eachCustomer.Name}"));
-
-
-
-try {customerRepository.Add(anotherCustomer); }
-catch (Exception ex) { Console.WriteLine(ex.Message); }
-
-
-Console.WriteLine($"The number of customers is {customerRepository.Count()}");
-
-
 IRepository<Artifact> artifactRepository = new ArtifactRepository();
-artifactRepository.Add(new Artifact { Name = "DPI NFT", Price = 2000 });
-artifactRepository.Add(new Artifact { Name = "Thomi NFT", Price = 3000 });
 
-//discount for a specific page
 
-IList<Artifact> artifacts = artifactRepository.Get(1, 50) ;
-artifacts.ToList()
-    .ForEach(itemArtifact => 
-        artifactRepository.Update(itemArtifact.Id,
-                        new Artifact { Price = itemArtifact.Price * 0.8m }));
+IStore store = new Store(artifactRepository, customerRepository);
 
-IList<Artifact> newArtifacts = artifactRepository.Get(1, 50);
 
-newArtifacts.ToList()
-    .ForEach(itemArtifact => Console.WriteLine($"{itemArtifact.Name}, {itemArtifact.Price}"));
+// Use case 1.  add artifacts to store
+store.AddArtifact(artifactMedium);
+store.AddArtifact(artifactHi);
+
+
+// Use case 2.  user registers
+store.Register(customerData);
+
+
+//Use case 3. user buys
+store.Statistics();
+var customerGuid = store.SignIn(customerData);
+var artifactGuid = store.SearchContainsByName("NFT");
+store.Buy(artifactGuid, customerGuid);
+store.Statistics();
+ 

@@ -1,4 +1,5 @@
 ﻿using NbgDigitalEshop.Model;
+using NbgDigitalEshop.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,15 @@ namespace NbgDigitalEshop.Service
 {
     public interface IStore
     {
-        public bool SignIn(string username, string password);
-        public bool SignOut(string username );
-        public bool Register(string username, string password);
+        public Guid SignIn(CustomerOptions customerOptions);
+        public bool SignOut(CustomerOptions customerOptions);
+        public Guid Register(CustomerOptions customerOptions);
 
-        public bool Buy(Artifact artifact);
-        public Artifact SearchByName(string artifactName);
+        public bool Buy(Guid artifactGuid, Guid customerGuid);
+        public Guid SearchContainsByName(string artifactName);
 
-        public  bool AddArtifact(Artifact artifact);
+        public  bool AddArtifact(ArtifactOptions artifact);
+
+        public void Statistics();
     }
 }

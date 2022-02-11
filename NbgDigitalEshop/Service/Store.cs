@@ -1,5 +1,6 @@
 ﻿using NbgDigitalEshop.exception;
 using NbgDigitalEshop.Model;
+using NbgDigitalEshop.Options;
 using NbgDigitalEshop.Repository;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,12 @@ namespace NbgDigitalEshop.Service
             _customerRepository = customerRepository;
         }
 
-        public bool AddArtifact(Artifact artifact)
-        {
+         public bool AddArtifact(ArtifactOptions artifactOption)
+        {    
             try {
-                if (artifact.Price > 5000)
+                if (artifactOption.Price > 5000)
                     throw new ModelException("artifact too expensive");
+                Artifact artifact = artifactOption.GetArtifact();
                 _artifactRepository.Add(artifact);
                 return true;
             }
@@ -33,27 +35,32 @@ namespace NbgDigitalEshop.Service
             }
         }
 
-        public bool Buy(Artifact artifact)
+        public bool Buy(Guid artifactGuid, Guid customerGuid)
         {
             throw new NotImplementedException();
         }
 
-        public bool Register(string username, string password)
+        public Guid Register(CustomerOptions customerOptions)
         {
             throw new NotImplementedException();
         }
 
-        public Artifact SearchByName(string artifactName)
+        public Guid SearchContainsByName(string artifactName)
         {
             throw new NotImplementedException();
         }
 
-        public bool SignIn(string username, string password)
+        public Guid SignIn(CustomerOptions customerOptions)
         {
             throw new NotImplementedException();
         }
 
-        public bool SignOut(string username)
+        public bool SignOut(CustomerOptions customerOptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Statistics()
         {
             throw new NotImplementedException();
         }
