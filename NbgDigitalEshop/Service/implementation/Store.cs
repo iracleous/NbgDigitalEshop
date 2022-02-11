@@ -98,7 +98,7 @@ namespace NbgDigitalEshop.Service
                 .Get(1, 50)
                 .ToList()
                 .ForEach(ae => Console.WriteLine($"{ae.Name}, {ae.Price}"));
-
+            Console.WriteLine("---------------------------------------------------\n");
         }
     }
 }

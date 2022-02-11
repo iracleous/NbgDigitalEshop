@@ -1,45 +1,15 @@
-﻿//use case
-
-using NbgDigitalEshop.Model;
-using NbgDigitalEshop.Options;
-using NbgDigitalEshop.Repository;
+﻿using NbgDigitalEshop.Model;
 using NbgDigitalEshop.Service;
 
 
-// data from input forms
-var customerData = new CustomerOptions
-{
-    FirstName = "D",
-    LastName = "X",
-    Email = "xx@gg.gr",
-    Address = "Athens",
-    Password = "xx"
-};
 
-var artifactMedium = new ArtifactOptions { Name = "DPI NFT", Price = 2000 };
-var artifactHi = new ArtifactOptions { Name = "Thomi NFT", Price = 3000 };
+ICsvManager reader = new CsvManager();
+string filename = "myfile.scv";
+string outputFilename = "myfile.out.scv";
 
-IRepository< Customer> customerRepository = new CustomerRepository();
-IRepository<Artifact> artifactRepository = new ArtifactRepository();
+List<Artifact> artifacts = reader.Load(filename); 
 
+artifacts.ForEach(a => Console.WriteLine(a.Name));
+artifacts.ForEach(a => a.Price *= 1.1m);
 
-IStore store = new Store(artifactRepository, customerRepository);
-
-
-// Use case 1.  add artifacts to store
-store.AddArtifact(artifactMedium);
-store.AddArtifact(artifactHi);
-
-
-// Use case 2.  user registers
-store.Register(customerData);
-
-
-//Use case 3. user buys
-store.Statistics();
-var customerGuid = store.SignIn(customerData);
-var artifactGuid = store.SearchContainsByName("NFT");
-if (artifactGuid != null && customerGuid != null)
-    store.Buy(artifactGuid.Value, customerGuid.Value);
-store.Statistics();
- 
+reader.Save(artifacts, outputFilename);
