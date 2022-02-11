@@ -16,6 +16,8 @@ namespace NbgDigitalEshop.Repository
         public bool Delete(Guid id);
         public IList<T> Get(int pageCount, int pageSize);
         public T Get(Guid id);
+
+        public IList<Guid> SearchByName(string name);
         public int Count();
     }
 }

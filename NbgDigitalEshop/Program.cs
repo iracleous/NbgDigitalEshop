@@ -39,6 +39,7 @@ store.Register(customerData);
 store.Statistics();
 var customerGuid = store.SignIn(customerData);
 var artifactGuid = store.SearchContainsByName("NFT");
-store.Buy(artifactGuid, customerGuid);
+if (artifactGuid != null && customerGuid != null)
+    store.Buy(artifactGuid.Value, customerGuid.Value);
 store.Statistics();
  

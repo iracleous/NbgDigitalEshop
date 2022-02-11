@@ -21,6 +21,14 @@ namespace NbgDigitalEshop.Repository
             return base.Add(artifact);
         }
 
+        public override IList<Guid> SearchByName(string name)
+        {
+            return _list
+                .Where(x => x.Name!=null && x.Name.Contains(name))
+                .Select (x => x.Id) 
+                .ToList();
+        }
+
         public override bool Update(Guid id, Artifact artifact)
         {
             try

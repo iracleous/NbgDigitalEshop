@@ -37,22 +37,48 @@ namespace NbgDigitalEshop.Service
 
         public bool Buy(Guid artifactGuid, Guid customerGuid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Artifact artifact = _artifactRepository.Get(artifactGuid);
+                _artifactRepository.Delete(artifactGuid);
+                Customer customer = _customerRepository.Get(customerGuid);
+                customer.Balance -= artifact.Price;
+            }
+            catch (Exception)
+            { 
+                return false;
+            }
+            return true;
         }
 
         public Guid Register(CustomerOptions customerOptions)
         {
-            throw new NotImplementedException();
+             try {
+                    if (!customerOptions.Address.Equals("Athens"))
+                        throw new OptionsException("No customers outside Athens are perimitted");
+                Customer customer = customerOptions.GetCustomer();
+                _customerRepository.Add(customer);
+                    return customer.Id;
+              }
+              catch(Exception) {
+                throw;
+            }
         }
 
-        public Guid SearchContainsByName(string artifactName)
+        public Guid? SearchContainsByName(string artifactName)
         {
-            throw new NotImplementedException();
+            IList<Guid> resultsGuid = _artifactRepository.SearchByName(artifactName);
+            if( resultsGuid.Count>0) return resultsGuid[0];
+            else
+            return null;
         }
 
-        public Guid SignIn(CustomerOptions customerOptions)
+        public Guid? SignIn(CustomerOptions customerOptions)
         {
-            throw new NotImplementedException();
+            IList<Guid> resultsGuid = _customerRepository.SearchByName(customerOptions.Email);
+            if (resultsGuid.Count > 0) return resultsGuid[0];
+            else
+                return null;
         }
 
         public bool SignOut(CustomerOptions customerOptions)
@@ -62,7 +88,17 @@ namespace NbgDigitalEshop.Service
 
         public void Statistics()
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"Customers no = {_customerRepository.Count()}");
+            _customerRepository
+                .Get(1, 50)
+                .ToList()
+                .ForEach(ce => Console.WriteLine($"{ce.Name}, {ce.Email}, {ce.Balance}"));
+            Console.WriteLine($"Artifacts no = {_artifactRepository.Count()}");
+            _artifactRepository
+                .Get(1, 50)
+                .ToList()
+                .ForEach(ae => Console.WriteLine($"{ae.Name}, {ae.Price}"));
+
         }
     }
 }

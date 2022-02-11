@@ -10,20 +10,26 @@ namespace NbgDigitalEshop.Repository
 {
     public class CustomerRepository : Repository<Customer>, IRepository<Customer>
     {
-         
-  
+ 
         public override Guid Add(Customer customer)
         {
+            // to do unique emails
+
             if (customer == null)
                 throw new ModelException("null customer");
             if (customer.Address == null)
                 throw new ModelException("null address");
-            if (!customer.Address.Equals("Athens"))
-                throw new ModelException("Customer's address is not Athens");
-           
+           customer.DateOnly = new DateOnly();
             return base.Add(customer);
         }
- 
+
+        public override IList<Guid> SearchByName(string name)
+        {
+            return _list
+              .Where(x => x.Email != null && x.Email.Contains(name))
+              .Select(x => x.Id)
+              .ToList();
+        }
 
         public override bool Update(Guid customerId, Customer customer)
         {

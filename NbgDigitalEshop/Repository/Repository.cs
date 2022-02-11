@@ -53,6 +53,9 @@ namespace NbgDigitalEshop.Repository
             }
             return t;
         }
+
+        public abstract IList<Guid> SearchByName(string name);
+
         public abstract bool Update(Guid id, T t);
     }
 }

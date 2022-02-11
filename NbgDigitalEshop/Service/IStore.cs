@@ -10,12 +10,12 @@ namespace NbgDigitalEshop.Service
 {
     public interface IStore
     {
-        public Guid SignIn(CustomerOptions customerOptions);
+        public Guid? SignIn(CustomerOptions customerOptions);
         public bool SignOut(CustomerOptions customerOptions);
         public Guid Register(CustomerOptions customerOptions);
 
         public bool Buy(Guid artifactGuid, Guid customerGuid);
-        public Guid SearchContainsByName(string artifactName);
+        public Guid? SearchContainsByName(string artifactName);
 
         public  bool AddArtifact(ArtifactOptions artifact);
 
