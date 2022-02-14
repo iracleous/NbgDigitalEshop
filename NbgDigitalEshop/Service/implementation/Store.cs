@@ -26,7 +26,7 @@ namespace NbgDigitalEshop.Service
             try {
                 if (artifactOption.Price > 5000)
                     throw new ModelException("artifact too expensive");
-                Artifact artifact = artifactOption.GetArtifact();
+                Artifact artifact = artifactOption.ToArtifact();
                 _artifactRepository.Add(artifact);
                 return true;
             }
@@ -56,7 +56,7 @@ namespace NbgDigitalEshop.Service
              try {
                     if (!customerOptions.Address.Equals("Athens"))
                         throw new OptionsException("No customers outside Athens are perimitted");
-                Customer customer = customerOptions.GetCustomer();
+                Customer customer = customerOptions.ToCustomer();
                 _customerRepository.Add(customer);
                     return customer.Id;
               }

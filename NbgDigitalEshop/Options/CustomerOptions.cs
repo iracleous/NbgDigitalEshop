@@ -17,7 +17,7 @@ namespace NbgDigitalEshop.Options
 
 
 
-        public Customer GetCustomer()
+        public Customer ToCustomer()
         {
             return new Customer
             {

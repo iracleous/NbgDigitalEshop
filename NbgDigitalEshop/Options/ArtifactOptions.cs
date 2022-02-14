@@ -17,7 +17,7 @@ namespace NbgDigitalEshop.Options
         public string? ImageFileName { get; set; }
 
 
-        public Artifact GetArtifact()
+        public Artifact ToArtifact()
         {
             return new Artifact
             {
