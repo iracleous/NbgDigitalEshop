@@ -29,9 +29,8 @@ using (SqlDataReader reader = cmd.ExecuteReader())
 {
     while (reader.Read())
     {
-        var id = reader["id"];
-        var name = reader["name"];
-        Console.WriteLine ($"id = {id} name = {name}");
+ 
+        Console.WriteLine ($"id = {reader["id"]} name = { reader["name"]}");
     }
 }
 
