@@ -12,10 +12,10 @@ namespace NbgDigitalEshop.Service
 {
     public class Store : IStore
     {
-        private readonly IRepository<Artifact> _artifactRepository;
-        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Artifact, Guid> _artifactRepository;
+        private readonly IRepository<Customer, Guid> _customerRepository;
 
-    public Store(IRepository<Artifact> artifactRepository, IRepository<Customer> customerRepository)
+    public Store(IRepository<Artifact, Guid> artifactRepository, IRepository<Customer, Guid> customerRepository)
         {
             _artifactRepository = artifactRepository;
             _customerRepository = customerRepository;

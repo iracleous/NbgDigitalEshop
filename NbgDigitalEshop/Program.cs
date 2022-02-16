@@ -1,5 +1,8 @@
 ﻿using NbgDigitalEshop.Model;
+using NbgDigitalEshop.Repository;
+using NbgDigitalEshop.Repository.implementation;
 using NbgDigitalEshop.Service;
+using System.Data;
 using System.Data.SqlClient;
 
 
@@ -15,25 +18,30 @@ artifacts.ForEach(a => a.Price *= 1.1m);
 
 reader.Save(artifacts, outputFilename);
 */
-
+Artifact artifactOne = new Artifact { Name = "statue", Price = 200m };
+Artifact artifactTwo = new Artifact { Name = "painting", Price = 200m };
 List<Artifact> artifacts = new();
-artifacts.Add(new Artifact { ArtifactDescription = "statue", Price = 200m }); 
-artifacts.Add(new Artifact { ArtifactDescription = "painting", Price = 200m });
+artifacts.Add(artifactOne); 
+artifacts.Add(artifactTwo);
+
 
 //initialize all classes
-using  SqlConnection conn = new SqlConnection("server=localhost;uid=sa;pwd=passw0rd;database=NbgAccountSystem");
+//using  SqlConnection conn = new SqlConnection("server=localhost;uid=sa;pwd=passw0rd;database=NbgAccountSystem");
+using SqlConnection conn = new("Server=localhost; Database=NbgAccountSystem; Integrated Security=true ");
 conn.Open();
-SqlCommand cmd = new SqlCommand("select * from customer", conn);
- 
-using (SqlDataReader reader = cmd.ExecuteReader())
-{
-    while (reader.Read())
-    {
- 
-        Console.WriteLine ($"id = {reader["id"]} name = { reader["name"]}");
-    }
-}
-
- 
 
 
+IRepository<Artifact,int> artifactDbRepository = new ArtifactDbRepository(conn);
+
+int newId = artifactDbRepository.Add(artifactOne);
+Console.WriteLine($"The inserted id is {newId}");
+
+IList<Artifact> artifactList = artifactDbRepository.Get(1, 20);
+artifactList.ToList().ForEach(x => Console.WriteLine($"Code = {x.Code} Name = {x.Name}"));
+
+
+Console.WriteLine($"The number of artifacts in the db is {artifactDbRepository.Count()}");
+
+var artifactIdList = artifactDbRepository.SearchByName("statue");
+
+artifactIdList.ToList().ForEach(x =>Console.WriteLine($"Artifact id = {x}"));

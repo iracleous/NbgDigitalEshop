@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace NbgDigitalEshop.Repository
 {
-    public interface IRepository<T> 
+    public interface IRepository<T, K> 
     {
         //CRUD
 
-        public Guid Add(T t);
-        public bool Update(Guid id, T t);
-        public bool Delete(Guid id);
+        public K Add(T t);
+        public bool Update(K id, T t);
+        public bool Delete(K id);
         public IList<T> Get(int pageCount, int pageSize);
-        public T Get(Guid id);
+        public T Get(K id);
 
-        public IList<Guid> SearchByName(string name);
+        public IList<K> SearchByName(string name);
         public int Count();
     }
 }

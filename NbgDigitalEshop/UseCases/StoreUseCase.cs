@@ -32,8 +32,8 @@ namespace NbgDigitalEshop.UseCases
             var artifactMedium = new ArtifactOptions { Name = "DPI NFT", Price = 2000 };
             var artifactHi = new ArtifactOptions { Name = "Thomi NFT", Price = 3000 };
 
-            IRepository<Customer> customerRepository = new CustomerRepository();
-            IRepository<Artifact> artifactRepository = new ArtifactRepository();
+            IRepository<Customer, Guid> customerRepository = new CustomerRepository();
+            IRepository<Artifact, Guid> artifactRepository = new ArtifactRepository();
 
             IStore store = new Store(artifactRepository, customerRepository);
 

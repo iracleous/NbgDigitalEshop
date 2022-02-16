@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NbgDigitalEshop.Repository
 {
-    public abstract class Repository<T> : IRepository<T> where T : BaseModel
+    public abstract class Repository<T> : IRepository<T, Guid> where T : BaseModel
     {
         protected readonly List<T> _list;
 

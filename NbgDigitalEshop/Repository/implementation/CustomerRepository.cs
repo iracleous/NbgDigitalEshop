@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NbgDigitalEshop.Repository
 {
-    public class CustomerRepository : Repository<Customer>, IRepository<Customer>
+    public class CustomerRepository : Repository<Customer>, IRepository<Customer, Guid>
     {
  
         public override Guid Add(Customer customer)

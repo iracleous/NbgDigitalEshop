@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NbgDigitalEshop.Repository
 {
-    public class ArtifactRepository : Repository<Artifact>, IRepository<Artifact>
+    public class ArtifactRepository : Repository<Artifact>, IRepository<Artifact, Guid>
     {
         public override Guid Add(Artifact artifact)
         {
