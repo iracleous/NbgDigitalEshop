@@ -23,6 +23,8 @@ try
 
     Console.WriteLine($"customers number is " + customerRepository.Count());
 
+    Console.WriteLine(customerRepository.Get(2).Data.Name);
+
     //Console.WriteLine($"customer id before saving to db = {customer.Id}");
     //customerRepository.Add(customer);
     //Console.WriteLine($"customer id after saving to db = {customer.Id}");
