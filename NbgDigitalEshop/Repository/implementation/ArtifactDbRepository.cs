@@ -12,7 +12,16 @@ namespace NbgDigitalEshop.Repository.implementation
 {
     public class ArtifactDbRepository : IRepository<Artifact, int>
     {
-        private SqlConnection _conn;
+        private readonly SqlConnection _conn;
+
+
+        private readonly string update = "update Artifact set name = @name, price = @price  where id =@id ";
+        private readonly string selectByPage = "select * from artifact order by id OFFSET @offset ROWS FETCH NEXT @top ROWS ONLY";
+        private readonly string insertOne = "INSERT INTO Artifact(Name,Price) VALUES(@name,@price); SELECT SCOPE_IDENTITY()";
+        private readonly string deleteOne = "delete from Artifact where id =@id ";
+        private readonly string selectOne = "select * from artifact where id = @id";
+        private readonly string selectCount = "select count(*) as count from Artifact";
+        private readonly string selectByName = "select * from artifact where name like @name";
 
         public ArtifactDbRepository (SqlConnection conn)
         {
@@ -21,7 +30,7 @@ namespace NbgDigitalEshop.Repository.implementation
 
         public int Add(Artifact artifact)
         {
-            string sql = "INSERT INTO Artifact(Name,Price) VALUES(@name,@price); SELECT SCOPE_IDENTITY()";
+            string sql = insertOne;
             using SqlCommand cmde = new(sql, _conn);
             cmde.Parameters.Add("@name", SqlDbType.VarChar, 50).Value = artifact.Name;
             cmde.Parameters.Add("@price", SqlDbType.Money).Value = artifact.Price;
@@ -32,23 +41,34 @@ namespace NbgDigitalEshop.Repository.implementation
 
         public int Count()
         {
-            string sql = "select count(*) as count from Artifact";
+            string sql = selectCount;
             using SqlCommand cmde = new(sql, _conn);
 
            return Convert.ToInt32(cmde.ExecuteScalar());
-
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            string sql = deleteOne;
+            using SqlCommand cmd = new(sql, _conn);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            cmd.CommandType = CommandType.Text;
+           int rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected > 0;
         }
 
         public IList<Artifact> Get(int pageCount, int pageSize)
         {
-            var artifactList = new List<Artifact>(); 
-            string sql = "select * from artifact";
+            var artifactList = new List<Artifact>();
+
+            if (pageSize <= 0 || pageSize > 50) pageSize = 20;
+            if(pageCount<= 0) pageCount = 1;
+
+            string sql = selectByPage; 
             using SqlCommand cmd = new(sql, _conn);
+           cmd.Parameters.Add("@top", SqlDbType.Int).Value = pageSize;
+           cmd.Parameters.Add("@offset", SqlDbType.Int).Value = (pageCount-1)*pageSize;
+
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -64,7 +84,7 @@ namespace NbgDigitalEshop.Repository.implementation
         public Artifact Get(int id)
         {
             var artifact = new Artifact();
-            string sql = "select * from artifact where id = @id";
+            string sql = selectOne;
             using SqlCommand cmd = new(sql, _conn);
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
             using SqlDataReader reader = cmd.ExecuteReader();
@@ -83,7 +103,7 @@ namespace NbgDigitalEshop.Repository.implementation
         public IList<int> SearchByName(string name)
         {
             var artifactIdList = new List<int>();
-            string sql = "select * from artifact where name like @name";
+            string sql = selectByName;
             using SqlCommand cmd = new(sql, _conn);
             cmd.Parameters.Add("@name", SqlDbType.VarChar,50).Value = "%" + name + "%";
             using SqlDataReader reader = cmd.ExecuteReader();
@@ -96,7 +116,14 @@ namespace NbgDigitalEshop.Repository.implementation
 
         public bool Update(int id, Artifact t)
         {
-            throw new NotImplementedException();
+            string sql = update;
+            using SqlCommand cmd = new(sql, _conn);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            cmd.Parameters.Add("@name", SqlDbType.VarChar, 50).Value = t.Name;
+            cmd.Parameters.Add("@price", SqlDbType.Money).Value = t.Price;
+            cmd.CommandType = CommandType.Text;
+            int rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected > 0;
         }
     }
 }
