@@ -13,7 +13,7 @@ namespace DatabaseApplication.model
         [Key]
         public int Id { get; set; }
         [StringLength(50)]
-        [Required]
+      
         public string? Name { get; set; }
         [StringLength(50)]
         public string? Address { get; set; }

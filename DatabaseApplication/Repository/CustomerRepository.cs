@@ -30,12 +30,19 @@ namespace DatabaseApplication.Service
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            Customer? customer = db.Customers.Find(id);
+            if (customer == null) return false;
+            db.Customers.Remove(customer);
+            db.SaveChanges();
+            return true;
         }
 
         public IList<Customer> Get(int pageCount, int pageSize)
         {
-            throw new NotImplementedException();
+            if (pageCount <= 0) pageCount = 1;
+            if (pageSize <= 0 || pageSize > 50) pageSize = 20;
+
+            return db.Customers.Skip((pageCount-1)*pageSize).Take(pageSize).ToList();
         }
 
         public Response<Customer> Get(int id)
@@ -44,13 +51,13 @@ namespace DatabaseApplication.Service
            return (customer!= null) ? 
                 new Response<Customer>
                {
-                   Code = 200,
+                   Code = Response<Customer>.FoundCode,
                    Message = "The customer has been found",
                    Data = customer
                }
             : new Response<Customer>
                {
-                   Code = 404,
+                   Code = Response<Customer>.NotFoundCode,
                    Message = "The customer has NOT been found",
                    Data = null
                };
@@ -58,12 +65,32 @@ namespace DatabaseApplication.Service
 
         public IList<int> SearchByName(string name)
         {
-            throw new NotImplementedException();
+
+            //check for performance
+
+            return db.Customers
+            //    .Where(customer => customer.Name !=null  && customer.Name.Contains(name)  )
+               .Where(customer => customer.Name.Contains(name))
+
+           //       .Where(customer => (""+customer.Name).Contains(name))
+                 .Select(customer => customer.Id)
+                 .ToList();
         }
 
-        public bool Update(int id, Customer t)
+        public bool Update(int id, Customer customer)
         {
-            throw new NotImplementedException();
+            Customer? customerInDb = db.Customers.Find(id);
+            if (customerInDb == null)
+            {
+                return false;
+            }
+            customerInDb.Name = customer.Name;
+            customerInDb.Address = customer.Address;
+            customerInDb.DateOfBirth = customer.DateOfBirth;
+            customerInDb.Balance = customer.Balance;
+            customerInDb.OrdersNumber = customer.OrdersNumber;
+            db.SaveChanges();
+            return true;
         }
     }
 }
