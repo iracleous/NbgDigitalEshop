@@ -14,10 +14,10 @@ namespace NbgDigitalTest
     {
         [Theory]
         [InlineData("Nick")]
-        [InlineData("John")]
+        [InlineData(null)]
         [InlineData("Dimitris")]
         [InlineData("Maria")]    
-        public void SearchByNameTest(string? name)
+        public void SearchByNameTest(string name)
         {
             IRepository<Customer, Guid> customerRepository = 
                 new CustomerRepository();
@@ -31,5 +31,27 @@ namespace NbgDigitalTest
             else
                 Assert.Equal(0, list.Count);
         }
+
+        [Fact]
+        public void UpdateTest()
+        {
+            IRepository<Customer, Guid> customerRepository =
+                new CustomerRepository();
+            customerRepository.Add(new Customer
+            {
+                Name = "Dimitris",
+                Address = "Athens"
+            });
+
+            Guid guid = customerRepository
+                .SearchByName("Dimitris")[0];
+            var customer = new Customer { Address = "Lamia" };
+
+            bool result = customerRepository.Update(guid, customer);
+
+            Assert.True(result);
+        }
+
+
     }
 }

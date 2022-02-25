@@ -14,7 +14,7 @@ namespace NbgDigitalEshop.Algorithms.Tests
         [TestMethod()]
         public void CalculateDiscountTest()
         {
-            Discount discount = new Discount() { InitialValue = 1.50m};
+            var discount = new Discount() { InitialValue = 1.50m};
             var discountValue = discount.CalculateDiscount(22);
             Assert.AreEqual(0.15m, discountValue );
 

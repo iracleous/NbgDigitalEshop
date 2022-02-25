@@ -23,7 +23,9 @@ namespace NbgDigitalEshop.Repository.implementation
             return base.Add(customer);
         }
 
-        public override IList<Guid> SearchByName(string? name)
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+        public override IList<Guid> SearchByName(string name)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
            if (name == null) return new List<Guid>();
             return _list

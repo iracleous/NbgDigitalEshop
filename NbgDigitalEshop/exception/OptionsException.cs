@@ -10,10 +10,10 @@ namespace NbgDigitalEshop.exception
 
     public class OptionsException : Exception
     {
-        public string Message { get; set; }
+         
         public OptionsException(string description) : base(description)
         {
-            Message = description;
+             
         }
     }
 

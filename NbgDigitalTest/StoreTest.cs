@@ -7,18 +7,17 @@ using NbgDigitalEshop.Repository.implementation;
 using NbgDigitalEshop.Service;
 using NbgDigitalEshop.Service.implementation;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace NbgDigitalTest
 {
     public class StoreTest
     {
-        
-
+ 
         [Fact]
         public void BuyTest()
         {
-
             var customerData = new CustomerOptions
             {
                 FirstName = "D",
@@ -83,17 +82,12 @@ namespace NbgDigitalTest
             new();
         public Mock<IRepository<Artifact, Guid>> mockArtifactRepo =
                     new();
-        [Fact]
-        public void BuyTestWithMoqRepos()
+        [Theory]
+        [MemberData(nameof(NorwegianBlueParrotTestData))]
+       
+        public void BuyTestWithMoqRepos(Customer customer)
         {
-            var customer = new Customer
-            {
-                Name = "D",
-                Email = "xx@gg.gr",
-                Address = "Athens",
-                Password = "xx",
-                Balance = 0
-            };
+             
 
             Guid customerGuid = Guid.NewGuid();
             Guid artifactGuid = Guid.NewGuid();
@@ -110,6 +104,46 @@ namespace NbgDigitalTest
 
             Assert.Equal(customer.Balance, -10);
         }
+
+
+         
+
+        public static IEnumerable<object[]> NorwegianBlueParrotTestData()
+        {
+            yield return new object[] {
+                new Customer()
+                    {
+                        Name = "D",
+                        Email = "xx@gg.gr",
+                        Address = "ZZZ",
+                        Password = "xx",
+                        Balance = 0
+                    }
+            };
+            yield return new object[] {
+                new Customer()
+                    {
+                        Name = "D1",
+                        Email = "xx@gg.gr",
+                        Address = "AAA",
+                        Password = "xx",
+                        Balance = 0
+                    }
+            };
+            yield return new object[] {
+                new Customer()
+                    {
+                        Name = "D2",
+                        Email = "xx@gg.gr",
+                        Address = "Athens",
+                        Password = "xx",
+                        Balance = 0
+                    }
+            };
+        }
+
+
+
 
     }
 }
