@@ -20,7 +20,7 @@ namespace NbgDigitalEshop.Algorithms.Tests
 
             var number1 = 0.1m;
             var number2 = 0.2m;
-            Assert.AreEqual(0.3m, number1+number2);
+            Assert.AreEqual(0.3m, number1 + number2);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Moq;
 using NbgDigitalEshop.exception;
 using NbgDigitalEshop.Model;
 using NbgDigitalEshop.Options;
@@ -10,14 +11,9 @@ using Xunit;
 
 namespace NbgDigitalTest
 {
-    public class UnitTest1
+    public class StoreTest
     {
-        [Fact]
-        public void Test1()
-        {
-            var status = true;
-            Assert.True(status, "This should be true");
-        }
+        
 
         [Fact]
         public void BuyTest()
@@ -83,11 +79,37 @@ namespace NbgDigitalTest
         }
 
 
+        public Mock<IRepository<Customer, Guid>> mockCustomerRepo =
+            new();
+        public Mock<IRepository<Artifact, Guid>> mockArtifactRepo =
+                    new();
+        [Fact]
+        public void BuyTestWithMoqRepos()
+        {
+            var customer = new Customer
+            {
+                Name = "D",
+                Email = "xx@gg.gr",
+                Address = "Athens",
+                Password = "xx",
+                Balance = 0
+            };
 
-        
+            Guid customerGuid = Guid.NewGuid();
+            Guid artifactGuid = Guid.NewGuid();
 
+            mockCustomerRepo.Setup(p => p.Get(customerGuid)).Returns(customer);
+            mockArtifactRepo.Setup(p => p.Get(artifactGuid)).Returns(
+                new Artifact() { Price=10});
+            mockArtifactRepo.Setup(p => p.Delete(artifactGuid));
 
+            IStore store = new Store(mockArtifactRepo.Object, 
+                mockCustomerRepo.Object);
 
+            bool buy = store.Buy(artifactGuid, customerGuid);
+
+            Assert.Equal(customer.Balance, -10);
+        }
 
     }
 }

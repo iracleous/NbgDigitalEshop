@@ -23,10 +23,11 @@ namespace NbgDigitalEshop.Repository.implementation
             return base.Add(customer);
         }
 
-        public override IList<Guid> SearchByName(string name)
+        public override IList<Guid> SearchByName(string? name)
         {
+           if (name == null) return new List<Guid>();
             return _list
-              .Where(x => x.Email != null && x.Email.Contains(name))
+              .Where(x => x.Name != null && x.Name.Contains(name))
               .Select(x => x.Id)
               .ToList();
         }

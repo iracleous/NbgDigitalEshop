@@ -17,7 +17,7 @@ namespace NbgDigitalEshop.Repository
         public IList<T> Get(int pageCount, int pageSize);
         public T Get(K id);
 
-        public IList<K> SearchByName(string name);
+        public IList<K> SearchByName(string? name);
         public int Count();
     }
 }
