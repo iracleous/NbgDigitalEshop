@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseApplication.Service
+namespace DatabaseApplication.Repository
 {
     public class CustomerRepository : IRepository<Customer, int>
     {
@@ -42,25 +42,25 @@ namespace DatabaseApplication.Service
             if (pageCount <= 0) pageCount = 1;
             if (pageSize <= 0 || pageSize > 50) pageSize = 20;
 
-            return db.Customers.Skip((pageCount-1)*pageSize).Take(pageSize).ToList();
+            return db.Customers.Skip((pageCount - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public Response<Customer> Get(int id)
         {
-           Customer? customer = db.Customers.Find(id);
-           return (customer!= null) ? 
-                new Response<Customer>
-               {
-                   Code = Response<Customer>.FoundCode,
-                   Message = "The customer has been found",
-                   Data = customer
-               }
-            : new Response<Customer>
-               {
-                   Code = Response<Customer>.NotFoundCode,
-                   Message = "The customer has NOT been found",
-                   Data = null
-               };
+            Customer? customer = db.Customers.Find(id);
+            return customer != null ?
+                 new Response<Customer>
+                 {
+                     Code = Response<Customer>.FoundCode,
+                     Message = "The customer has been found",
+                     Data = customer
+                 }
+             : new Response<Customer>
+             {
+                 Code = Response<Customer>.NotFoundCode,
+                 Message = "The customer has NOT been found",
+                 Data = null
+             };
         }
 
         public IList<int> SearchByName(string name)
@@ -72,7 +72,7 @@ namespace DatabaseApplication.Service
             //    .Where(customer => customer.Name !=null  && customer.Name.Contains(name)  )
                .Where(customer => customer.Name.Contains(name))
 
-           //       .Where(customer => (""+customer.Name).Contains(name))
+                 //       .Where(customer => (""+customer.Name).Contains(name))
                  .Select(customer => customer.Id)
                  .ToList();
         }

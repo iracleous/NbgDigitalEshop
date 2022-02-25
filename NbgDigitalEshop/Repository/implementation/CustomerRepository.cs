@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgDigitalEshop.Repository
+namespace NbgDigitalEshop.Repository.implementation
 {
     public class CustomerRepository : Repository<Customer>, IRepository<Customer, Guid>
     {
- 
+
         public override Guid Add(Customer customer)
         {
             // to do unique emails
@@ -19,7 +19,7 @@ namespace NbgDigitalEshop.Repository
                 throw new ModelException("null customer");
             if (customer.Address == null)
                 throw new ModelException("null address");
-           customer.DateOnly = new DateOnly();
+            customer.DateOnly = new DateOnly();
             return base.Add(customer);
         }
 

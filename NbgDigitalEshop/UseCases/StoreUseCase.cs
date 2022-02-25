@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using NbgDigitalEshop.Model;
 using NbgDigitalEshop.Options;
 using NbgDigitalEshop.Repository;
+using NbgDigitalEshop.Repository.implementation;
 using NbgDigitalEshop.Service;
-
+using NbgDigitalEshop.Service.implementation;
 
 namespace NbgDigitalEshop.UseCases
 {

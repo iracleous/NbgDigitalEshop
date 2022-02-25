@@ -8,30 +8,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgDigitalEshop.Service
+namespace NbgDigitalEshop.Service.implementation
 {
     public class Store : IStore
     {
         private readonly IRepository<Artifact, Guid> _artifactRepository;
         private readonly IRepository<Customer, Guid> _customerRepository;
 
-    public Store(IRepository<Artifact, Guid> artifactRepository, IRepository<Customer, Guid> customerRepository)
+        public Store(IRepository<Artifact, Guid> artifactRepository, IRepository<Customer, Guid> customerRepository)
         {
             _artifactRepository = artifactRepository;
             _customerRepository = customerRepository;
         }
 
-         public bool AddArtifact(ArtifactOptions artifactOption)
-        {    
-            try {
+        public bool AddArtifact(ArtifactOptions artifactOption)
+        {
+            try
+            {
                 if (artifactOption.Price > 5000)
                     throw new ModelException("artifact too expensive");
                 Artifact artifact = artifactOption.ToArtifact();
                 _artifactRepository.Add(artifact);
                 return true;
             }
-            catch(Exception ) { 
-                return false; 
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -45,7 +47,7 @@ namespace NbgDigitalEshop.Service
                 customer.Balance -= artifact.Price;
             }
             catch (Exception)
-            { 
+            {
                 return false;
             }
             return true;
@@ -53,14 +55,16 @@ namespace NbgDigitalEshop.Service
 
         public Guid Register(CustomerOptions customerOptions)
         {
-             try {
-                    if (!customerOptions.Address.Equals("Athens"))
-                        throw new OptionsException("No customers outside Athens are perimitted");
+            try
+            {
+                if (!customerOptions.Address.Equals("Athens"))
+                    throw new OptionsException("No customers outside Athens are permitted");
                 Customer customer = customerOptions.ToCustomer();
                 _customerRepository.Add(customer);
-                    return customer.Id;
-              }
-              catch(Exception) {
+                return customer.Id;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
@@ -68,9 +72,9 @@ namespace NbgDigitalEshop.Service
         public Guid? SearchContainsByName(string artifactName)
         {
             IList<Guid> resultsGuid = _artifactRepository.SearchByName(artifactName);
-            if( resultsGuid.Count>0) return resultsGuid[0];
+            if (resultsGuid.Count > 0) return resultsGuid[0];
             else
-            return null;
+                return null;
         }
 
         public Guid? SignIn(CustomerOptions customerOptions)

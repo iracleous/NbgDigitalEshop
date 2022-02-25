@@ -1,8 +1,8 @@
 ﻿
 using DatabaseApplication.DbConn;
 using DatabaseApplication.model;
+using DatabaseApplication.Repository;
 using DatabaseApplication.Responses;
-using DatabaseApplication.Service;
 
 Customer customer = new Customer
 {

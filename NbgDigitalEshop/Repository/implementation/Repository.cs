@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgDigitalEshop.Repository
+namespace NbgDigitalEshop.Repository.implementation
 {
     public abstract class Repository<T> : IRepository<T, Guid> where T : BaseModel
     {
@@ -17,11 +17,11 @@ namespace NbgDigitalEshop.Repository
             _list = new List<T>();
         }
 
-        public virtual  Guid Add(T t)
+        public virtual Guid Add(T t)
         {
             if (t == null)
-                throw new ModelException( "null entity ");
-            t.Id = Guid.NewGuid(); 
+                throw new ModelException("null entity ");
+            t.Id = Guid.NewGuid();
             _list.Add(t);
             return t.Id;
         }
@@ -36,7 +36,7 @@ namespace NbgDigitalEshop.Repository
             return _list.Remove(Get(id));
         }
 
-         public IList<T> Get(int pageCount, int pageSize)
+        public IList<T> Get(int pageCount, int pageSize)
         {
             if (pageCount <= 0) pageCount = 1;
             if (pageSize <= 0 || pageSize > 50) pageSize = 20;
@@ -59,4 +59,4 @@ namespace NbgDigitalEshop.Repository
         public abstract bool Update(Guid id, T t);
     }
 }
- 
+

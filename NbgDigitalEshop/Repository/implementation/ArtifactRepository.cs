@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgDigitalEshop.Repository
+namespace NbgDigitalEshop.Repository.implementation
 {
     public class ArtifactRepository : Repository<Artifact>, IRepository<Artifact, Guid>
     {
@@ -16,7 +16,7 @@ namespace NbgDigitalEshop.Repository
                 throw new ModelException("null artifact");
             if (artifact.Name == null)
                 throw new ModelException("null artifact name");
-           
+
 
             return base.Add(artifact);
         }
@@ -24,8 +24,8 @@ namespace NbgDigitalEshop.Repository
         public override IList<Guid> SearchByName(string name)
         {
             return _list
-                .Where(x => x.Name!=null && x.Name.Contains(name))
-                .Select (x => x.Id) 
+                .Where(x => x.Name != null && x.Name.Contains(name))
+                .Select(x => x.Id)
                 .ToList();
         }
 
